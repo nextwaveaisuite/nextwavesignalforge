@@ -1,25 +1,36 @@
-'use client';
-import { useState } from 'react';
+"use client";
 
-export default function Ingest() {
-  const [text, setText] = useState('');
+import { useState } from "react";
+
+export default function IngestPage() {
+  const [text, setText] = useState("");
 
   async function submit() {
-    await fetch('/api/ingest', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ raw_text: text })
+    if (!text.trim()) return;
+
+    await fetch("/api/signals", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text }),
     });
-    alert('Signal ingested');
-    setText('');
+
+    alert("Signal ingested");
+    setText("");
   }
 
   return (
-    <div>
+    <main style={{ padding: 24 }}>
+      <h1>SignalForge MVP</h1>
       <h2>Ingest Signal</h2>
-      <textarea value={text} onChange={e=>setText(e.target.value)} />
-      <br />
+
+      <textarea
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        rows={4}
+        style={{ width: "100%", marginBottom: 12 }}
+      />
+
       <button onClick={submit}>Submit</button>
-    </div>
+    </main>
   );
 }
