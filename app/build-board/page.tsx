@@ -1,22 +1,30 @@
-export const dynamic = "force-dynamic";
+'use client'
 
-export default async function BuildBoardPage() {
-  let data: any[] = [];
+import { useEffect, useState } from 'react'
 
-  try {
-    const res = await fetch("/api/build-board", { cache: "no-store" });
-    if (res.ok) {
-      data = await res.json();
-    }
-  } catch (e) {
-    data = [];
-  }
+export default function BuildBoard() {
+  const [signals, setSignals] = useState<any[]>([])
+
+  useEffect(() => {
+    fetch('/api/signals')
+      .then(res => res.json())
+      .then(setSignals)
+  }, [])
 
   return (
-    <main style={{ padding: 24 }}>
-      <h1>SignalForge MVP</h1>
-      <h2>Build Board</h2>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
+    <main>
+      <h1>Build Board</h1>
+
+      {signals.length === 0 && <p>No signals yet.</p>}
+
+      {signals.map((s, i) => (
+        <div key={i} style={{ border: '1px solid #333', padding: 12, marginBottom: 10 }}>
+          <strong>{s.verdict}</strong> — Score: {s.score}
+          <p><em>Raw:</em> {s.raw_text}</p>
+          <p><em>Normalized:</em> {s.normalized}</p>
+          <p><em>Reason:</em> {s.reason}</p>
+        </div>
+      ))}
     </main>
-  );
+  )
 }
