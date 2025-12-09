@@ -1,13 +1,11 @@
-import Link from 'next/link';
-
 export default function Home() {
   return (
-    <div>
-      <p>SignalForge MVP is live.</p>
+    <main>
+      <h1>SignalForge</h1>
       <ul>
-        <li><Link href="/ingest">Ingest Signal</Link></li>
-        <li><Link href="/build-board">Build Board</Link></li>
+        <li><a href="/ingest">Ingest Signal</a></li>
+        <li><a href="/build-board">Build Board</a></li>
       </ul>
-    </div>
-  );
+    </main>
+  )
 }
