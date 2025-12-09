@@ -1,19 +1,16 @@
 export const dynamic = "force-dynamic";
 
-async function getData() {
-  const res = await fetch("/api/build-board", {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    return [];
-  }
-
-  return res.json();
-}
-
 export default async function BuildBoardPage() {
-  const data = await getData();
+  let data: any[] = [];
+
+  try {
+    const res = await fetch("/api/build-board", { cache: "no-store" });
+    if (res.ok) {
+      data = await res.json();
+    }
+  } catch (e) {
+    data = [];
+  }
 
   return (
     <main style={{ padding: 24 }}>
